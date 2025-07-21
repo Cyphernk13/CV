@@ -16,7 +16,7 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    /* Use the uploaded image as the cursor, with a fallback */
+    /* Use the local cursor image, with a fallback */
     cursor: url('cursor.png'), auto;
 }
 
@@ -450,7 +450,8 @@ footer {
 }
 
 .social-icons {
-    display: none; /* Shown on mobile */
+    display: flex; /* Changed from none to flex */
+    justify-content: center; /* Center the icons */
     margin-bottom: 1rem;
 }
 
@@ -524,7 +525,5 @@ footer {
         margin: 50px auto 0;
     }
     
-    .social-icons {
-        display: block;
-    }
+    /* No longer need to override social-icons display here */
 }
