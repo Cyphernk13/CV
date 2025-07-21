@@ -17,7 +17,7 @@
     padding: 0;
     box-sizing: border-box;
     /* Use the local cursor image, with a fallback */
-    cursor: url('cursor.png'), auto;
+    cursor: url('src/cursor.png'), auto;
 }
 
 html {
@@ -130,7 +130,7 @@ body {
 .hamburger {
     display: none;
     /* Use the custom cursor for the hamburger menu as well */
-    cursor: url('cursor.png'), auto;
+    cursor: url('src/cursor.png'), auto;
 }
 
 .bar {
