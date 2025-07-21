@@ -16,7 +16,8 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    cursor: none; /* Hide default cursor */
+    /* Use the uploaded image as the cursor, with a fallback */
+    cursor: url('cursor.png'), auto;
 }
 
 html {
@@ -31,31 +32,35 @@ body {
     overflow-x: hidden;
 }
 
-/* --- CUSTOM CURSOR --- */
-.cursor-dot,
-.cursor-outline {
+/* --- CLICK ANIMATION --- */
+.click-effect {
     position: fixed;
-    top: 0;
-    left: 0;
-    transform: translate(-50%, -50%);
+    box-sizing: border-box;
+    border-style: solid;
+    border-color: var(--green);
     border-radius: 50%;
-    z-index: 9999;
-    pointer-events: none;
-    transition: opacity 0.3s, transform 0.3s;
+    animation: clickEffect 0.4s ease-out;
+    z-index: 99999;
+    pointer-events: none; /* Make sure it doesn't interfere with other clicks */
 }
 
-.cursor-dot {
-    width: 8px;
-    height: 8px;
-    background-color: var(--green);
+@keyframes clickEffect {
+    0% {
+        opacity: 1;
+        width: 0.5em;
+        height: 0.5em;
+        margin: -0.25em;
+        border-width: 0.5em;
+    }
+    100% {
+        opacity: 0;
+        width: 10em;
+        height: 10em;
+        margin: -5em;
+        border-width: 0.03em;
+    }
 }
 
-.cursor-outline {
-    width: 40px;
-    height: 40px;
-    border: 2px solid var(--green);
-    transition: width 0.3s, height 0.3s, border-color 0.3s, transform 0.1s;
-}
 
 /* --- MATRIX BACKGROUND --- */
 #matrix-canvas {
@@ -124,7 +129,8 @@ body {
 
 .hamburger {
     display: none;
-    cursor: pointer;
+    /* Use the custom cursor for the hamburger menu as well */
+    cursor: url('cursor.png'), auto;
 }
 
 .bar {
@@ -474,9 +480,6 @@ footer {
 @media (max-width: 768px) {
     * {
         cursor: auto; /* Revert to default cursor on mobile */
-    }
-    .cursor-dot, .cursor-outline {
-        display: none; /* Hide custom cursor on mobile */
     }
 
     .nav-menu {

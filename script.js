@@ -1,34 +1,48 @@
 document.addEventListener('DOMContentLoaded', function() {
 
-    // --- CUSTOM CURSOR ---
-    const cursorDot = document.querySelector('.cursor-dot');
-    const cursorOutline = document.querySelector('.cursor-outline');
+    // --- SOUND & CLICK ANIMATION ---
+    // Create synths for click sounds using Tone.js
+    const clickSound = new Tone.Synth({
+        oscillator: { type: 'sine' },
+        envelope: { attack: 0.001, decay: 0.1, sustain: 0, release: 0.1 }
+    }).toDestination();
 
-    window.addEventListener('mousemove', function(e) {
-        const posX = e.clientX;
-        const posY = e.clientY;
+    const linkClickSound = new Tone.Synth({
+        oscillator: { type: 'triangle' },
+        envelope: { attack: 0.001, decay: 0.1, sustain: 0, release: 0.1 }
+    }).toDestination();
 
-        cursorDot.style.left = `${posX}px`;
-        cursorDot.style.top = `${posY}px`;
+    // Function to create the ripple effect on click
+    function createClickEffect(e) {
+        const effect = document.createElement('div');
+        effect.className = 'click-effect';
+        // Position the effect at the cursor's location
+        effect.style.top = e.clientY + 'px';
+        effect.style.left = e.clientX + 'px';
+        document.body.appendChild(effect);
 
-        cursorOutline.animate({
-            left: `${posX}px`,
-            top: `${posY}px`
-        }, { duration: 500, fill: 'forwards' });
-    });
+        // Remove the effect after the animation is done
+        setTimeout(() => {
+            effect.remove();
+        }, 400); // Duration matches the animation in CSS
+    }
 
-    const interactiveElements = document.querySelectorAll('a, .hamburger, .project-card');
-    interactiveElements.forEach(el => {
-        el.addEventListener('mouseover', () => {
-            cursorOutline.style.width = '60px';
-            cursorOutline.style.height = '60px';
-            cursorOutline.style.borderColor = 'var(--white)';
-        });
-        el.addEventListener('mouseout', () => {
-            cursorOutline.style.width = '40px';
-            cursorOutline.style.height = '40px';
-            cursorOutline.style.borderColor = 'var(--green)';
-        });
+    // Add a single event listener for all clicks on the document
+    document.addEventListener('click', function(e) {
+        // Start Tone.js audio context on the first user interaction
+        Tone.start();
+
+        // Create the visual click effect
+        createClickEffect(e);
+
+        // Check if the clicked element or its parent is a link
+        if (e.target.closest('a')) {
+            // Play a higher-pitched sound for links
+            linkClickSound.triggerAttackRelease('G4', '8n');
+        } else {
+            // Play a standard sound for any other click
+            clickSound.triggerAttackRelease('C4', '8n');
+        }
     });
 
 
